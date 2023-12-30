@@ -25,7 +25,7 @@ def generate_xml(items):
             else:
                 child = ET.SubElement(xml_item, key)
                 child.text = item[key]
-    print ET.tostring(xml_items)
+    print (ET.tostring(xml_items))
 
 
 def parse_item(item):
