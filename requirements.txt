@@ -1,5 +1,4 @@
 # Python version (if specific)
-pip install 23.3.2
 
 # Optional: If working within a virtual environment, list additional packages and their versions.
 # package1==version
