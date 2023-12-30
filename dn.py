@@ -3,36 +3,42 @@ import urllib.request
 import time
 from xml.etree import ElementTree as ET
 
-# Take from
 def get_items(uri):
-    items = []
-    data = json.loads(urllib.request.urlopen(uri).read()) 
-    for item in data['stories']:
-        result = parse_item(item)
-        items.append(result)
+    try:
+        items = []
+        response = urllib.request.urlopen(uri)
+        data = json.loads(response.read().decode('utf-8'))  # Decode response to UTF-8
+        for item in data.get('stories', []):
+            result = parse_item(item)
+            items.append(result)
 
-    xml = generate_xml(items)
-    return xml
-
+        xml = generate_xml(items)
+        return xml
+    except Exception as e:
+        print(f"Error fetching or processing data: {e}")
+        return None
 
 def generate_xml(items):
-    xml_items = ET.Element('items')
-    for item in items:
-        xml_item = ET.SubElement(xml_items, 'item')
-        for key in item.keys():
-            if key == 'uid' or key == 'arg':
-                xml_item.set(key, item[key])
-            else:
-                child = ET.SubElement(xml_item, key)
-                child.text = item[key]
-    print (ET.tostring(xml_items))
-
+    try:
+        xml_items = ET.Element('items')
+        for item in items:
+            xml_item = ET.SubElement(xml_items, 'item')
+            for key, value in item.items():
+                if key == 'uid' or key == 'arg':
+                    xml_item.set(key, value)
+                else:
+                    child = ET.SubElement(xml_item, key)
+                    child.text = value
+        return ET.tostring(xml_items).decode('utf-8')  # Decode XML to UTF-8
+    except Exception as e:
+        print(f"Error generating XML: {e}")
+        return None
 
 def parse_item(item):
     return {
-        'uid': '%s%s' % (item['id'], time.time()),
-        'arg': item['url'],
-        'title': item['title'],
-        'subtitle': str(item['vote_count']) +' Votes  ' + str(item['num_comments']) + ' Comments',
+        'uid': f"{item['id']}-{time.time()}",
+        'arg': item.get('url', ''),
+        'title': item.get('title', ''),
+        'subtitle': f"{item.get('vote_count', 0)} Votes  {item.get('num_comments', 0)} Comments",
         'icon': 'icon.png'
     }
