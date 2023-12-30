@@ -1,5 +1,5 @@
 # Python version (if specific)
-python3.8.10
+pip install --upgrade pip
 
 # Optional: If working within a virtual environment, list additional packages and their versions.
 # package1==version
