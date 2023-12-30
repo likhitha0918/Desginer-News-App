@@ -6,7 +6,7 @@ from xml.etree import ElementTree as ET
 # Take from
 def get_items(uri):
     items = []
-    data = json.loads(urllib2.urlopen(uri).read())
+    data = json.loads(urllib.request.urlopen(uri).read())
     for item in data['stories']:
         result = parse_item(item)
         items.append(result)
