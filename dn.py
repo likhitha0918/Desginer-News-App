@@ -1,5 +1,5 @@
 import json
-import urllib2
+import urllib.request
 import time
 from xml.etree import ElementTree as ET
 
