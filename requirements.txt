@@ -1,0 +1,6 @@
+# Python version (if specific)
+python==2.7.18
+
+# Optional: If working within a virtual environment, list additional packages and their versions.
+# package1==version
+# package2==version
